@@ -1,0 +1,143 @@
+<html>
+<head>
+
+<script>
+
+var WaveDrawer = (function () {
+  function WaveDrawer (params) {
+    this.canvas = params.canvas;
+    this.context = this.canvas.getContext("2d");
+
+    this.channels = [];
+
+    this.colors = [
+      "rgba(255, 0, 0, 255)",
+      "rgba(0, 255, 0, 255)",
+      "rgba(0, 0, 255, 255)",
+      "rgba(255, 0, 255, 255)",
+    ];
+  }
+
+  WaveDrawer.prototype.pushSamples = function (channel, new_samples) {
+    if (!this.channels[channel]) {
+      this.channels[channel] = [];
+    }
+
+    var cur_channel = this.channels[channel];
+
+    // Add new channel data.
+    cur_channel = cur_channel.concat(new_samples);
+
+    // Remove non-visible samples.
+    cur_channel = cur_channel.slice(
+      cur_channel.length - (+this.canvas.width),
+      cur_channel.length + 1
+    );
+
+    // Draw.
+    var ctx = this.context;
+    ctx.globalCompositeOperation = "lighter";
+    ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+
+    ctx.beginPath();
+    for (var i = cur_channel.length - 1; i >= 0; i--) {
+      var y_pos = (this.canvas.height / 2) * -cur_channel[i] + this.canvas.height / 2;
+      if (i == cur_channel.length - 1) {
+        ctx.moveTo(i, y_pos);
+      } else {
+        ctx.lineTo(i, y_pos);
+      }
+    }
+    ctx.strokeStyle = this.colors[channel % this.colors.length];
+    ctx.stroke();
+  };
+
+  return WaveDrawer;
+})();
+
+</script>
+
+<script src="Graph.js"></script>
+<script src="Synesthesia.js"></script>
+<script src="MainOutput.js"></script>
+<script src="Gain.js"></script>
+<script src="Oscillator.js"></script>
+<script src="MIDIPitch.js"></script>
+<script src="ScriptProcessor.js"></script>
+
+<script>
+
+window.addEventListener("load", function () {
+
+  main_wave_drawer = new WaveDrawer({
+    canvas: document.getElementById("wave_canvas")
+  });
+
+  MainSynesthesia = new Synesthesia();
+
+  main_output = MainSynesthesia.produceNode("MainOutput");
+
+  // wave processor
+  wave_processor = MainSynesthesia.produceNode("ScriptProcessor", {
+    bufferSize: 2048, inputChannelCount: 2, outputChannelCount: 2,
+    callback: function (data) {
+      for (var channel_ix = 0; channel_ix < data.outputBuffer.numberOfChannels; channel_ix++) {
+        data.outputBuffer.getChannelData(channel_ix).set(data.inputBuffer.getChannelData(channel_ix));
+
+        main_wave_drawer.pushSamples(
+          channel_ix,
+          Array.prototype.slice.apply(data.inputBuffer.getChannelData(channel_ix))
+        );
+      }
+    }
+  });
+  wave_processor.getOutput("audio").connectTo(main_output.getInput("audio"));
+
+  osc1 = MainSynesthesia.produceNode("Oscillator");
+  //osc1.api_node.type = "sawtooth";
+  osc1.api_node.start(0);
+  osc1.api_node.frequency.setValueAtTime(0, 0);
+  osc1.getOutput("audio").connectTo(wave_processor.getInput("audio"));
+
+  freq_script = MainSynesthesia.produceNode("ScriptProcessor", {
+    bufferSize: 2048, inputChannelCount: 2, outputChannelCount: 2,
+    callback: (function () {
+      var samples_processed = 0;
+      return function (data) {
+        for (var channel_ix = 0; channel_ix < data.outputBuffer.numberOfChannels; channel_ix++) {
+          var channel_output_buffer = data.outputBuffer.getChannelData(channel_ix);
+          var output_arr = new Array(channel_output_buffer.length);
+          for (var i = 0; i < output_arr.length; i++) {
+            var g_sample_ix = samples_processed + i;
+            output_arr[i] = g_sample_ix / 64 % 20000;
+          }
+          channel_output_buffer.set(output_arr);
+
+        }
+        samples_processed += output_arr.length;
+      };
+    })()
+  });
+  freq_script.getOutput("audio").connectTo(osc1.getInput("frequency"));
+
+  // do stuff
+
+  osc1.getInput("notes").on_message(
+    new Synesthesia.IOInterfaces.Notes.Note({
+      frequency: 440
+    }),
+    0
+  );
+
+});
+
+</script>
+<head>
+<body>
+
+<button onclick="wave_processor.api_node.disconnect();">kill</button>
+<br />
+<canvas id="wave_canvas" style="background-color:black;" width="640" height="240"></canvas>
+
+</body>
+<html>
