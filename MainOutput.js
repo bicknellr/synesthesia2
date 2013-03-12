@@ -2,11 +2,14 @@ Synesthesia.NodeLibrary["MainOutput"] = (function () {
   function MainOutput (params) {
     Graph.Node.apply(this);
 
-    this.api_node = params.audioContext.destination;
+    this.context = params.audioContext;
+
+    this.api_node = this.context.destination;
 
     this.inputs = {
       "audio": new Synesthesia.IOInterfaces.Audio({
-        apiNode: this.api_node
+        apiNode: this.api_node,
+        context: this.context
       })
     };
 

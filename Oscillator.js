@@ -2,32 +2,32 @@ Synesthesia.NodeLibrary["Oscillator"] = (function () {
   function Oscillator (params) {
     Graph.Node.apply(this);
 
-    this.api_node = params.audioContext.createOscillator();
+    this.context = params.audioContext;
+
+    this.api_node = this.context.createOscillator();
 
     this.inputs = {
-      "notes": new Synesthesia.IOInterfaces.Notes({
-        onMessage: this.onNoteMessage.bind(this)
+      "frequency": new Synesthesia.IOInterfaces.AudioParam({
+        apiNode: this.api_node.frequency,
+        context: this.context,
+        isAutomatable: true
       }),
-      "frequency": new Synesthesia.IOInterfaces.Audio({
-        apiNode: this.api_node.frequency
-      }),
-      "detune": new Synesthesia.IOInterfaces.Audio({
-        apiNode: this.api_node.detune
+      "detune": new Synesthesia.IOInterfaces.AudioParam({
+        apiNode: this.api_node.detune,
+        context: this.context,
+        isAutomatable: true
       })
     };
 
     this.outputs = {
       "audio": new Synesthesia.IOInterfaces.Audio({
-        apiNode: this.api_node
+        apiNode: this.api_node,
+        context: this.context
       })
     };
   }
 
   Oscillator.prototype = Object.create(Graph.Node.prototype);
-
-  Oscillator.prototype.onNoteMessage = function (note, timestamp) {
-    console.log("note: " + note + " timestamp: " + timestamp);
-  };
 
   return Oscillator;
 })();

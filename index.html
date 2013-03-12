@@ -99,6 +99,7 @@ window.addEventListener("load", function () {
   osc1.api_node.frequency.setValueAtTime(0, 0);
   osc1.getOutput("audio").connectTo(wave_processor.getInput("audio"));
 
+  /*
   freq_script = MainSynesthesia.produceNode("ScriptProcessor", {
     bufferSize: 2048, inputChannelCount: 2, outputChannelCount: 2,
     callback: (function () {
@@ -119,15 +120,23 @@ window.addEventListener("load", function () {
     })()
   });
   freq_script.getOutput("audio").connectTo(osc1.getInput("frequency"));
+  */
 
-  // do stuff
-
-  osc1.getInput("notes").on_message(
-    new Synesthesia.IOInterfaces.Notes.Note({
-      frequency: 440
-    }),
-    0
+  automation1 = new Synesthesia.DataTypes.Automation();
+  for (var i = 0; i < 25; i++) {
+    automation1.addKeyframe(
+      new Synesthesia.DataTypes.Automation.Keyframe({
+        time: i * 0.1, value: 110 * Math.pow(2, i/12), curve: Synesthesia.DataTypes.Automation.Keyframe.Curves.Set
+      })
+    );
+  }
+  automation1.addKeyframe(
+    new Synesthesia.DataTypes.Automation.Keyframe({
+      time: 3.0, value: 0, curve: Synesthesia.DataTypes.Automation.Keyframe.Curves.Set
+    })
   );
+  osc1.getInput("frequency").setAutomation(automation1);
+
 
 });
 

@@ -2,20 +2,25 @@ Synesthesia.NodeLibrary["Gain"] = (function () {
   function Gain (params) {
     Graph.Node.apply(this);
 
-    this.api_node = params.audioContext.createGain();
+    this.context = params.audioContext;
+
+    this.api_node = this.context.createGain();
 
     this.inputs = {
       "audio": new Synesthesia.IOInterfaces.Audio({
-        apiNode: this.api_node
+        apiNode: this.api_node,
+        context: this.context
       }),
-      "gain": new Synesthesia.IOInterfaces.Audio({
-        apiNode: this.api_node.gain
+      "gain": new Synesthesia.IOInterfaces.AudioParam({
+        apiNode: this.api_node.gain,
+        context: this.context
       })
     };
 
     this.outputs = {
       "audio": new Synesthesia.IOInterfaces.Audio({
-        apiNode: this.api_node
+        apiNode: this.api_node,
+        context: this.context
       })
     };
   }

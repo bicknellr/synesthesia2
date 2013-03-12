@@ -2,7 +2,9 @@ Synesthesia.NodeLibrary["ScriptProcessor"] = (function () {
   function ScriptProcessor (params) {
     Graph.Node.apply(this);
 
-    this.api_node = params.audioContext.createScriptProcessor(
+    this.context = params.audioContext;
+
+    this.api_node = this.context.createScriptProcessor(
       params.bufferSize,
       params.inputChannelCount,
       params.outputChannelCount
@@ -12,13 +14,15 @@ Synesthesia.NodeLibrary["ScriptProcessor"] = (function () {
 
     this.inputs = {
       "audio": new Synesthesia.IOInterfaces.Audio({
-        apiNode: this.api_node
+        apiNode: this.api_node,
+        context: this.context
       })
     };
 
     this.outputs = {
       "audio": new Synesthesia.IOInterfaces.Audio({
-        apiNode: this.api_node
+        apiNode: this.api_node,
+        context: this.context
       })
     };
   }
