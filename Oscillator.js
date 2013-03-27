@@ -9,13 +9,11 @@ Synesthesia.NodeLibrary["Oscillator"] = (function () {
     this.inputs = {
       "frequency": new Synesthesia.IOInterfaces.AudioParam({
         apiNode: this.api_node.frequency,
-        context: this.context,
-        isAutomatable: true
+        context: this.context
       }),
       "detune": new Synesthesia.IOInterfaces.AudioParam({
         apiNode: this.api_node.detune,
-        context: this.context,
-        isAutomatable: true
+        context: this.context
       })
     };
 

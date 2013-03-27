@@ -62,6 +62,7 @@ var WaveDrawer = (function () {
 <script src="MainOutput.js"></script>
 <script src="Gain.js"></script>
 <script src="Oscillator.js"></script>
+<script src="BitCrusher.js"></script>
 <script src="MIDIPitch.js"></script>
 <script src="ScriptProcessor.js"></script>
 
@@ -93,11 +94,14 @@ window.addEventListener("load", function () {
   });
   wave_processor.getOutput("audio").connectTo(main_output.getInput("audio"));
 
+  bitcrusher1 = MainSynesthesia.produceNode("BitCrusher");
+  bitcrusher1.getOutput("audio").connectTo(wave_processor.getInput("audio"));
+
   osc1 = MainSynesthesia.produceNode("Oscillator");
   //osc1.api_node.type = "sawtooth";
   osc1.api_node.start(0);
   osc1.api_node.frequency.setValueAtTime(0, 0);
-  osc1.getOutput("audio").connectTo(wave_processor.getInput("audio"));
+  osc1.getOutput("audio").connectTo(bitcrusher1.getInput("audio"));
 
   /*
   freq_script = MainSynesthesia.produceNode("ScriptProcessor", {
@@ -122,20 +126,38 @@ window.addEventListener("load", function () {
   freq_script.getOutput("audio").connectTo(osc1.getInput("frequency"));
   */
 
-  automation1 = new Synesthesia.DataTypes.Automation();
+  freq_auto = new Synesthesia.DataTypes.Automation();
   for (var i = 0; i < 25; i++) {
-    automation1.addKeyframe(
+    freq_auto.addKeyframe(
       new Synesthesia.DataTypes.Automation.Keyframe({
         time: i * 0.1, value: 110 * Math.pow(2, i/12), curve: Synesthesia.DataTypes.Automation.Keyframe.Curves.Set
       })
     );
   }
-  automation1.addKeyframe(
+  freq_auto.addKeyframe(
     new Synesthesia.DataTypes.Automation.Keyframe({
       time: 3.0, value: 0, curve: Synesthesia.DataTypes.Automation.Keyframe.Curves.Set
     })
   );
-  osc1.getInput("frequency").setAutomation(automation1);
+  osc1.getInput("frequency").setAutomation(freq_auto);
+
+  bit_auto = new Synesthesia.DataTypes.Automation();
+  bit_auto.addKeyframe(
+    new Synesthesia.DataTypes.Automation.Keyframe({
+      time: 0, value: 16, curve: Synesthesia.DataTypes.Automation.Keyframe.Curves.Set
+    })
+  );
+  bit_auto.addKeyframe(
+    new Synesthesia.DataTypes.Automation.Keyframe({
+      time: 1.2, value: 0.1, curve: Synesthesia.DataTypes.Automation.Keyframe.Curves.Linear
+    })
+  );
+  bit_auto.addKeyframe(
+    new Synesthesia.DataTypes.Automation.Keyframe({
+      time: 2.4, value: 16, curve: Synesthesia.DataTypes.Automation.Keyframe.Curves.Exponential
+    })
+  );
+  bitcrusher1.getInput("width").setAutomation(bit_auto);
 
 
 });
@@ -144,7 +166,7 @@ window.addEventListener("load", function () {
 <head>
 <body>
 
-<button onclick="wave_processor.api_node.disconnect();">kill</button>
+<button onclick="wave_processor.getOutput('audio').disconnectTo(main_output.getInput('audio'));">kill</button>
 <br />
 <canvas id="wave_canvas" style="background-color:black;" width="640" height="240"></canvas>
 
