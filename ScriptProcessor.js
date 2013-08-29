@@ -1,33 +1,40 @@
-Synesthesia.NodeLibrary["ScriptProcessor"] = (function () {
-  function ScriptProcessor (params) {
-    Graph.Node.apply(this);
+module.declare("ScriptProcessor", ["Synesthesia", "Graph"], function () {
 
-    this.context = params.audioContext;
+  var Synesthesia = module.require("Synesthesia");
+  var Graph = module.require("Graph");
 
-    this.api_node = this.context.createScriptProcessor(
-      params.bufferSize,
-      params.inputChannelCount,
-      params.outputChannelCount
-    );
+  Synesthesia.NodeLibrary["ScriptProcessor"] = (function () {
+    function ScriptProcessor (params) {
+      Graph.Node.apply(this);
 
-    this.api_node.onaudioprocess = params.callback;
+      this.context = params.audioContext;
 
-    this.inputs = {
-      "audio": new Synesthesia.IOInterfaces.Audio({
-        apiNode: this.api_node,
-        context: this.context
-      })
-    };
+      this.api_node = this.context.createScriptProcessor(
+        params.bufferSize,
+        params.inputChannelCount,
+        params.outputChannelCount
+      );
 
-    this.outputs = {
-      "audio": new Synesthesia.IOInterfaces.Audio({
-        apiNode: this.api_node,
-        context: this.context
-      })
-    };
-  }
+      this.api_node.onaudioprocess = params.callback;
 
-  ScriptProcessor.prototype = Object.create(Graph.Node.prototype);
+      this.inputs = {
+        "audio": new Synesthesia.IOInterfaces.Audio({
+          apiNode: this.api_node,
+          context: this.context
+        })
+      };
 
-  return ScriptProcessor;
-})();
+      this.outputs = {
+        "audio": new Synesthesia.IOInterfaces.Audio({
+          apiNode: this.api_node,
+          context: this.context
+        })
+      };
+    }
+
+    ScriptProcessor.prototype = Object.create(Graph.Node.prototype);
+
+    return ScriptProcessor;
+  })();
+
+});

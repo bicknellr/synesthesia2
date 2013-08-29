@@ -1,31 +1,38 @@
-Synesthesia.NodeLibrary["Oscillator"] = (function () {
-  function Oscillator (params) {
-    Graph.Node.apply(this);
+module.declare("Oscillator", ["Synesthesia", "Graph"], function () {
 
-    this.context = params.audioContext;
+  var Synesthesia = module.require("Synesthesia");
+  var Graph = module.require("Graph");
 
-    this.api_node = this.context.createOscillator();
+  Synesthesia.NodeLibrary["Oscillator"] = (function () {
+    function Oscillator (params) {
+      Graph.Node.apply(this);
 
-    this.inputs = {
-      "frequency": new Synesthesia.IOInterfaces.AudioParam({
-        apiNode: this.api_node.frequency,
-        context: this.context
-      }),
-      "detune": new Synesthesia.IOInterfaces.AudioParam({
-        apiNode: this.api_node.detune,
-        context: this.context
-      })
-    };
+      this.context = params.audioContext;
 
-    this.outputs = {
-      "audio": new Synesthesia.IOInterfaces.Audio({
-        apiNode: this.api_node,
-        context: this.context
-      })
-    };
-  }
+      this.api_node = this.context.createOscillator();
 
-  Oscillator.prototype = Object.create(Graph.Node.prototype);
+      this.inputs = {
+        "frequency": new Synesthesia.IOInterfaces.AudioParam({
+          apiNode: this.api_node.frequency,
+          context: this.context
+        }),
+        "detune": new Synesthesia.IOInterfaces.AudioParam({
+          apiNode: this.api_node.detune,
+          context: this.context
+        })
+      };
 
-  return Oscillator;
-})();
+      this.outputs = {
+        "audio": new Synesthesia.IOInterfaces.Audio({
+          apiNode: this.api_node,
+          context: this.context
+        })
+      };
+    }
+
+    Oscillator.prototype = Object.create(Graph.Node.prototype);
+
+    return Oscillator;
+  })();
+
+});

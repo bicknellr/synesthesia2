@@ -1,22 +1,29 @@
-Synesthesia.NodeLibrary["MainOutput"] = (function () {
-  function MainOutput (params) {
-    Graph.Node.apply(this);
+module.declare("MainOutput", ["Synesthesia", "Graph"], function () {
 
-    this.context = params.audioContext;
+  var Synesthesia = module.require("Synesthesia");
+  var Graph = module.require("Graph");
 
-    this.api_node = this.context.destination;
+  Synesthesia.NodeLibrary["MainOutput"] = (function () {
+    function MainOutput (params) {
+      Graph.Node.apply(this);
 
-    this.inputs = {
-      "audio": new Synesthesia.IOInterfaces.Audio({
-        apiNode: this.api_node,
-        context: this.context
-      })
-    };
+      this.context = params.audioContext;
 
-    this.outputs = {};
-  }
+      this.api_node = this.context.destination;
 
-  MainOutput.prototype = Object.create(Graph.Node.prototype);
+      this.inputs = {
+        "audio": new Synesthesia.IOInterfaces.Audio({
+          apiNode: this.api_node,
+          context: this.context
+        })
+      };
 
-  return MainOutput;
-})();
+      this.outputs = {};
+    }
+
+    MainOutput.prototype = Object.create(Graph.Node.prototype);
+
+    return MainOutput;
+  })();
+
+});

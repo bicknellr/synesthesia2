@@ -1,31 +1,38 @@
-Synesthesia.NodeLibrary["Gain"] = (function () {
-  function Gain (params) {
-    Graph.Node.apply(this);
+module.declare("Gain", ["Synesthesia", "Graph"], function () {
 
-    this.context = params.audioContext;
+  var Synesthesia = module.require("Synesthesia");
+  var Graph = module.require("Graph");
 
-    this.api_node = this.context.createGain();
+  Synesthesia.NodeLibrary["Gain"] = (function () {
+    function Gain (params) {
+      Graph.Node.apply(this);
 
-    this.inputs = {
-      "audio": new Synesthesia.IOInterfaces.Audio({
-        apiNode: this.api_node,
-        context: this.context
-      }),
-      "gain": new Synesthesia.IOInterfaces.AudioParam({
-        apiNode: this.api_node.gain,
-        context: this.context
-      })
-    };
+      this.context = params.audioContext;
 
-    this.outputs = {
-      "audio": new Synesthesia.IOInterfaces.Audio({
-        apiNode: this.api_node,
-        context: this.context
-      })
-    };
-  }
+      this.api_node = this.context.createGain();
 
-  Gain.prototype = Object.create(Graph.Node.prototype);
+      this.inputs = {
+        "audio": new Synesthesia.IOInterfaces.Audio({
+          apiNode: this.api_node,
+          context: this.context
+        }),
+        "gain": new Synesthesia.IOInterfaces.AudioParam({
+          apiNode: this.api_node.gain,
+          context: this.context
+        })
+      };
 
-  return Gain;
-})();
+      this.outputs = {
+        "audio": new Synesthesia.IOInterfaces.Audio({
+          apiNode: this.api_node,
+          context: this.context
+        })
+      };
+    }
+
+    Gain.prototype = Object.create(Graph.Node.prototype);
+
+    return Gain;
+  })();
+
+});
