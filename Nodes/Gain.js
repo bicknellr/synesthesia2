@@ -1,7 +1,12 @@
-module.declare("Gain", ["Synesthesia", "Graph"], function () {
+module.declare("Nodes/Gain", [
+  "Graph",
+  "Synesthesia",
+  "IOInterfaces/Audio",
+  "IOInterfaces/AudioParam"
+], function () {
 
-  var Synesthesia = module.require("Synesthesia");
   var Graph = module.require("Graph");
+  var Synesthesia = module.require("Synesthesia");
 
   Synesthesia.NodeLibrary["Gain"] = (function () {
     function Gain (params) {

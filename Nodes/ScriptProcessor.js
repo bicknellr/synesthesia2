@@ -1,7 +1,11 @@
-module.declare("ScriptProcessor", ["Synesthesia", "Graph"], function () {
+module.declare("Nodes/ScriptProcessor", [
+  "Graph",
+  "Synesthesia",
+  "IOInterfaces/Audio"
+], function () {
 
-  var Synesthesia = module.require("Synesthesia");
   var Graph = module.require("Graph");
+  var Synesthesia = module.require("Synesthesia");
 
   Synesthesia.NodeLibrary["ScriptProcessor"] = (function () {
     function ScriptProcessor (params) {

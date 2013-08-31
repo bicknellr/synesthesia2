@@ -1,7 +1,12 @@
-module.declare("BitCrusher", ["Synesthesia", "Graph"], function () {
+module.declare("Nodes/BitCrusher", [
+  "Graph",
+  "Synesthesia",
+  "IOInterfaces/Audio",
+  "IOInterfaces/CustomAudioParam"
+], function () {
 
-  var Synesthesia = module.require("Synesthesia");
   var Graph = module.require("Graph");
+  var Synesthesia = module.require("Synesthesia");
 
   Synesthesia.NodeLibrary["BitCrusher"] = (function () {
     function BitCrusher (params) {

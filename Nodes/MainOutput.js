@@ -1,7 +1,11 @@
-module.declare("MainOutput", ["Synesthesia", "Graph"], function () {
+module.declare("Nodes/MainOutput", [
+  "Graph",
+  "Synesthesia", 
+  "IOInterfaces/Audio"
+], function () {
 
-  var Synesthesia = module.require("Synesthesia");
   var Graph = module.require("Graph");
+  var Synesthesia = module.require("Synesthesia");
 
   Synesthesia.NodeLibrary["MainOutput"] = (function () {
     function MainOutput (params) {

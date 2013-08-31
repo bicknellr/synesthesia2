@@ -1,7 +1,11 @@
-module.declare("MIDISource", ["Synesthesia", "Graph"], function () {
+module.declare("Nodes/MIDISource", [
+  "Graph",
+  "Synesthesia",
+  "IOInterfaces/MIDI"
+], function () {
 
-  var Synesthesia = module.require("Synesthesia");
   var Graph = module.require("Graph");
+  var Synesthesia = module.require("Synesthesia");
 
   Synesthesia.NodeLibrary["MIDISource"] = (function () {
     function MIDISource (params) {

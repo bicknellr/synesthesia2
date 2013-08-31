@@ -60,24 +60,34 @@ var WaveDrawer = (function () {
 <script src="./module.js"></script>
 <script src="./Graph.js"></script>
 <script src="./Synesthesia.js"></script>
-<script src="./Nodes/MainOutput.js"></script>
-<script src="./Nodes/Gain.js"></script>
-<script src="./Nodes/Oscillator.js"></script>
+<script src="./DataTypes/Automation.js"></script>
+<script src="./DataTypes/Note.js"></script>
+<script src="./IOInterfaces/Audio.js"></script>
+<script src="./IOInterfaces/AudioParam.js"></script>
+<script src="./IOInterfaces/CustomAudioParam.js"></script>
+<script src="./IOInterfaces/MIDI.js"></script>
+<script src="./IOInterfaces/Notes.js"></script>
 <script src="./Nodes/BitCrusher.js"></script>
-<script src="./Nodes/MIDISource.js"></script>
+<script src="./Nodes/Gain.js"></script>
 <script src="./Nodes/MIDIPitch.js"></script>
+<script src="./Nodes/MIDISource.js"></script>
+<script src="./Nodes/MainOutput.js"></script>
+<script src="./Nodes/Oscillator.js"></script>
 <script src="./Nodes/ScriptProcessor.js"></script>
 
 <script>
 
 module.declare("MAIN", [
   "Synesthesia",
-  "MainOutput",
-  "Oscillator",
-  "Gain",
-  "ScriptProcessor",
-  "BitCrusher",
-  "MIDIPitch",
+  "DataTypes/Automation",
+  "DataTypes/Note",
+  "Nodes/BitCrusher",
+  "Nodes/Gain",
+  "Nodes/MIDIPitch",
+  "Nodes/MIDISource",
+  "Nodes/MainOutput",
+  "Nodes/Oscillator",
+  "Nodes/ScriptProcessor"
 ], function () {
 
   var Synesthesia = module.require("Synesthesia");
