@@ -64,6 +64,7 @@ var WaveDrawer = (function () {
 <script src="./Gain.js"></script>
 <script src="./Oscillator.js"></script>
 <script src="./BitCrusher.js"></script>
+<script src="./MIDISource.js"></script>
 <script src="./MIDIPitch.js"></script>
 <script src="./ScriptProcessor.js"></script>
 
@@ -111,7 +112,6 @@ module.declare("MAIN", [
     bitcrusher1.getOutput("audio").connectTo(wave_processor.getInput("audio"));
 
     osc1 = MainSynesthesia.produceNode("Oscillator");
-    osc1.api_node.start(0);
     osc1.api_node.frequency.setValueAtTime(0, 0);
     osc1.getOutput("audio").connectTo(bitcrusher1.getInput("audio"));
 
@@ -148,15 +148,31 @@ module.declare("MAIN", [
     );
     bitcrusher1.getInput("width").setAutomation(bit_auto);
 
+    midi0 = MainSynesthesia.produceNode("MIDISource");
+
+    // Test functions.
+
+    START = function () {
+      bitcrusher1.getInput("width").setTime(0);
+      osc1.api_node.start(0);
+    };
+
+    STOP = function () {
+      osc1.api_node.stop(0);
+    };
   });
 
 });
+
+START = function () {};
+STOP = function () {};
 
 </script>
 <head>
 <body>
 
-<button onclick="wave_processor.getOutput('audio').disconnectTo(main_output.getInput('audio'));">kill</button>
+<button onclick="START()">START</button>
+<button onclick="STOP()">STOP</button>
 <br />
 <canvas id="wave_canvas" style="background-color:black;" width="640" height="240"></canvas>
 
