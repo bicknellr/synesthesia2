@@ -138,6 +138,10 @@ STOP = function () {};
 <button onclick="START()">START</button>
 <button onclick="STOP()">STOP</button>
 <br />
+<button onclick="eval(this.innerHTML);">
+  midi0.getInput("device_index").set(0);
+</button>
+<br />
 <canvas id="wave_canvas" style="background-color:black;" width="640" height="240"></canvas>
 
 </body>

@@ -1,6 +1,7 @@
 module.declare("Nodes/MIDISource", [
   "Graph",
   "Synesthesia",
+  "IOInterfaces/IONumber",
   "IOInterfaces/MIDI",
   "Nodes/MIDISource:canaryPolyfillMIDIAccess"
 ], function () {
@@ -8,6 +9,7 @@ module.declare("Nodes/MIDISource", [
   var Graph = module.require("Graph");
   var Synesthesia = module.require("Synesthesia");
 
+  var IONumber = module.require("IOInterfaces/IONumber");
   var MIDI = module.require("IOInterfaces/MIDI");
 
   var canaryPolyfillMIDIAccess = module.require("Nodes/MIDISource:canaryPolyfillMIDIAccess");
@@ -18,39 +20,34 @@ module.declare("Nodes/MIDISource", [
 
       this.context = params.audioContext;
 
-      this.inputs = {};
+      this.inputs = {
+        "device_index": new IONumber({
+          onSet: this.selectDeviceByIndex.bind(this)
+        })
+      };
 
       this.outputs = {
         "midi": new MIDI()
       };
 
-      this.init();
-    }
+      this.access = undefined;
 
-    MIDISource.prototype = Object.create(Graph.Node.prototype);
-
-    MIDISource.prototype.init = function () {
       navigator.requestMIDIAccess().then(
         this.requestMIDIAccess_success.bind(this),
         this.requestMIDIAccess_failure.bind(this)
       );
     };
 
+    MIDISource.prototype = Object.create(Graph.Node.prototype);
+
     MIDISource.prototype.requestMIDIAccess_success = function (access, options) {
       console.log("MIDISource(.requestMIDIAccess_success): Acquired MIDIAccess object.");
 
       canaryPolyfillMIDIAccess(access);
 
-      console.log("MIDISource(.requestMIDIAccess_success): access\n", access);
-      access.onconnect = this.access_onconnect.bind(this);
-      access.ondisconnect = this.access_ondisconnect.bind(this);
-
-      console.log("MIDISource(.requestMIDIAccess_success): access.getInputs()\n", access.getInputs());
-      console.log("MIDISource(.requestMIDIAccess_success): access.getInput(0)\n", access.getInput(0));
-
-      console.log("MIDISource(.requestMIDIAccess_success): access.getOutputs()\n", access.getOutputs());
-      console.log("MIDISource(.requestMIDIAccess_success): access.getOutput(0)\n", access.getOutput(0));
-      access.getInput(0).onmidimessage = this.onmidimessage.bind(this);
+      this.access = access;
+      this.access.onconnect = this.access_onconnect.bind(this);
+      this.access.ondisconnect = this.access_ondisconnect.bind(this);
     };
 
     MIDISource.prototype.requestMIDIAccess_failure = function (err) {
@@ -63,6 +60,16 @@ module.declare("Nodes/MIDISource", [
 
     MIDISource.prototype.access_ondisconnect = function () {
       console.log("MIDISource(.access_ondisconnect):\n", arguments);
+    };
+
+    MIDISource.prototype.selectDeviceByIndex = function (device_index) {
+      if (!this.access) return;
+      if (typeof device_index !== "number") {
+        throw new Error("MIDISource(.selectDeviceByIndex): Device index must be a number!"); // an integer really..
+      }
+
+      var selected_input = this.access.getInput(device_index);
+      selected_input.onmidimessage = this.onmidimessage.bind(this);
     };
 
     MIDISource.prototype.onmidimessage = function () {
