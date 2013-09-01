@@ -1,8 +1,4 @@
-module.declare("DataTypes/Automation", [
-  "Synesthesia"
-], function () {
-
-  var Synesthesia = module.require("Synesthesia");
+module.declare("DataTypes/Automation", [], function () {
 
   var Automation = (function () {
     function Automation (params) {

@@ -1,8 +1,4 @@
-module.declare("DataTypes/Note", [
-  "Synesthesia"
-], function () {
-
-  var Synesthesia = module.require("Synesthesia");
+module.declare("DataTypes/Note", [], function () {
 
   var Note = (function () {
     function Note (params) {
