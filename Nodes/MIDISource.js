@@ -27,6 +27,7 @@ module.declare("Nodes/MIDISource", [
       this.init();
     }
 
+    MIDISource.prototype = Object.create(Graph.Node.prototype);
 
     MIDISource.prototype.init = function () {
       navigator.requestMIDIAccess().then(
