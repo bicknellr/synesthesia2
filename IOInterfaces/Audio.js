@@ -6,7 +6,7 @@ module.declare("IOInterfaces/Audio", [
   var Graph = module.require("Graph");
   var Synesthesia = module.require("Synesthesia");
 
-  Synesthesia.IOInterfaces["Audio"] = (function () {
+  var Audio = (function () {
     function Audio (params) {
       params = (typeof params == "undefined" ? {} : params);
 
@@ -38,5 +38,7 @@ module.declare("IOInterfaces/Audio", [
 
     return Audio;
   })();
+
+  return Audio;
 
 });

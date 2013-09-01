@@ -8,7 +8,10 @@ module.declare("Nodes/BitCrusher", [
   var Graph = module.require("Graph");
   var Synesthesia = module.require("Synesthesia");
 
-  Synesthesia.NodeLibrary["BitCrusher"] = (function () {
+  var Audio = module.require("IOInterfaces/Audio");
+  var CustomAudioParam = module.require("IOInterfaces/CustomAudioParam");
+
+  var BitCrusher = (function () {
     function BitCrusher (params) {
       Graph.Node.apply(this);
 
@@ -18,11 +21,11 @@ module.declare("Nodes/BitCrusher", [
       this.api_node.onaudioprocess = this.onAudioProcess.bind(this);
 
       this.inputs = {
-        "audio": new Synesthesia.IOInterfaces.Audio({
+        "audio": new Audio({
           apiNode: this.api_node,
           context: this.context
         }),
-        "width": new Synesthesia.IOInterfaces.CustomAudioParam({
+        "width": new CustomAudioParam({
           apiNode: this.api_node,
           context: this.context,
           defaultValue: 16,
@@ -31,7 +34,7 @@ module.declare("Nodes/BitCrusher", [
       };
 
       this.outputs = {
-        "audio": new Synesthesia.IOInterfaces.Audio({
+        "audio": new Audio({
           apiNode: this.api_node,
           context: this.context
         })
@@ -58,5 +61,7 @@ module.declare("Nodes/BitCrusher", [
 
     return BitCrusher;
   })();
+
+  return BitCrusher;
 
 });

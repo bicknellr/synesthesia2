@@ -7,7 +7,9 @@ module.declare("Nodes/MainOutput", [
   var Graph = module.require("Graph");
   var Synesthesia = module.require("Synesthesia");
 
-  Synesthesia.NodeLibrary["MainOutput"] = (function () {
+  var Audio = module.require("IOInterfaces/Audio");
+
+  var MainOutput = (function () {
     function MainOutput (params) {
       Graph.Node.apply(this);
 
@@ -16,7 +18,7 @@ module.declare("Nodes/MainOutput", [
       this.api_node = this.context.destination;
 
       this.inputs = {
-        "audio": new Synesthesia.IOInterfaces.Audio({
+        "audio": new Audio({
           apiNode: this.api_node,
           context: this.context
         })
@@ -29,5 +31,7 @@ module.declare("Nodes/MainOutput", [
 
     return MainOutput;
   })();
+
+  return MainOutput;
 
 });

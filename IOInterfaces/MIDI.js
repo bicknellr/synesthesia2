@@ -6,7 +6,7 @@ module.declare("IOInterfaces/MIDI", [
   var Graph = module.require("Graph");
   var Synesthesia = module.require("Synesthesia");
 
-  Synesthesia.IOInterfaces["MIDI"] = (function () {
+  var MIDI = (function () {
     function MIDI (params) {
       params = (typeof params == "undefined" ? {} : params);
 
@@ -37,5 +37,7 @@ module.declare("IOInterfaces/MIDI", [
 
     return MIDI;
   })();
+
+  return MIDI;
 
 });

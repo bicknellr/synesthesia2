@@ -7,18 +7,20 @@ module.declare("Nodes/MIDIPitch", [
   var Graph = module.require("Graph");
   var Synesthesia = module.require("Synesthesia");
 
-  Synesthesia.NodeLibrary["MIDIPitch"] = (function () {
+  var MIDI = module.require("IOInterfaces/MIDI");
+
+  var MIDIPitch = (function () {
     function MIDIPitch (params) {
       Graph.Node.apply(this);
 
       this.inputs = {
-        "midi": new Synesthesia.IOInterfaces.MIDI({
+        "midi": new MIDI({
           onMessage: this.onMessage.bind(this)
         })
       };
       
       this.outputs = {
-        "midi": new Synesthesia.IOInterfaces.MIDI()
+        "midi": new MIDI()
       };
     }
 
@@ -30,5 +32,7 @@ module.declare("Nodes/MIDIPitch", [
 
     return MIDIPitch;
   })();
+
+  return MIDIPitch;
 
 });

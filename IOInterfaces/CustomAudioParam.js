@@ -7,7 +7,9 @@ module.declare("IOInterfaces/CustomAudioParam", [
   var Graph = module.require("Graph");
   var Synesthesia = module.require("Synesthesia");
 
-  Synesthesia.IOInterfaces["CustomAudioParam"] = (function () {
+  var AudioParam = module.require("IOInterfaces/AudioParam");
+
+  var CustomAudioParam = (function () {
     function CustomAudioParam (params) {
       params = (typeof params == "undefined" ? {} : params);
 
@@ -41,7 +43,7 @@ module.declare("IOInterfaces/CustomAudioParam", [
       }).bind(this)();
       this.one_producer.connect(this.gain_modifier);
 
-      Synesthesia.IOInterfaces.AudioParam.apply(this, [{
+      AudioParam.apply(this, [{
         apiNode: this.gain_modifier.gain,
         context: this.context,
         defaultValue: params.defaultValue
@@ -50,7 +52,7 @@ module.declare("IOInterfaces/CustomAudioParam", [
       this.sample_data = new Float32Array(this.buffer_size);
     }
 
-    CustomAudioParam.prototype = Object.create(Synesthesia.IOInterfaces.AudioParam.prototype);
+    CustomAudioParam.prototype = Object.create(AudioParam.prototype);
 
     CustomAudioParam.prototype.onSampleRecord = function (data) {
       this.sample_data.set(data.inputBuffer.getChannelData(0));
@@ -62,5 +64,7 @@ module.declare("IOInterfaces/CustomAudioParam", [
 
     return CustomAudioParam;
   })();
+
+  return CustomAudioParam;
 
 });

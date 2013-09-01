@@ -7,7 +7,9 @@ module.declare("Nodes/ScriptProcessor", [
   var Graph = module.require("Graph");
   var Synesthesia = module.require("Synesthesia");
 
-  Synesthesia.NodeLibrary["ScriptProcessor"] = (function () {
+  var Audio = module.require("IOInterfaces/Audio");
+
+  var ScriptProcessor = (function () {
     function ScriptProcessor (params) {
       Graph.Node.apply(this);
 
@@ -22,14 +24,14 @@ module.declare("Nodes/ScriptProcessor", [
       this.api_node.onaudioprocess = params.callback;
 
       this.inputs = {
-        "audio": new Synesthesia.IOInterfaces.Audio({
+        "audio": new Audio({
           apiNode: this.api_node,
           context: this.context
         })
       };
 
       this.outputs = {
-        "audio": new Synesthesia.IOInterfaces.Audio({
+        "audio": new Audio({
           apiNode: this.api_node,
           context: this.context
         })
@@ -40,5 +42,7 @@ module.declare("Nodes/ScriptProcessor", [
 
     return ScriptProcessor;
   })();
+
+  return ScriptProcessor;
 
 });

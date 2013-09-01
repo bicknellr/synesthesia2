@@ -8,7 +8,10 @@ module.declare("Nodes/Gain", [
   var Graph = module.require("Graph");
   var Synesthesia = module.require("Synesthesia");
 
-  Synesthesia.NodeLibrary["Gain"] = (function () {
+  var Audio = module.require("IOInterfaces/Audio");
+  var AudioParam = module.require("IOInterfaces/AudioParam");
+
+  var Gain = (function () {
     function Gain (params) {
       Graph.Node.apply(this);
 
@@ -17,18 +20,18 @@ module.declare("Nodes/Gain", [
       this.api_node = this.context.createGain();
 
       this.inputs = {
-        "audio": new Synesthesia.IOInterfaces.Audio({
+        "audio": new Audio({
           apiNode: this.api_node,
           context: this.context
         }),
-        "gain": new Synesthesia.IOInterfaces.AudioParam({
+        "gain": new AudioParam({
           apiNode: this.api_node.gain,
           context: this.context
         })
       };
 
       this.outputs = {
-        "audio": new Synesthesia.IOInterfaces.Audio({
+        "audio": new Audio({
           apiNode: this.api_node,
           context: this.context
         })
@@ -39,5 +42,7 @@ module.declare("Nodes/Gain", [
 
     return Gain;
   })();
+
+  return Gain;
 
 });

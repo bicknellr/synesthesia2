@@ -1,8 +1,10 @@
-module.declare("DataTypes/Note", ["Synesthesia"], function () {
+module.declare("DataTypes/Note", [
+  "Synesthesia"
+], function () {
 
   var Synesthesia = module.require("Synesthesia");
 
-  Synesthesia.DataTypes["Note"] = (function () {
+  var Note = (function () {
     function Note (params) {
       this.frequency = params.frequency;
     }
@@ -13,5 +15,7 @@ module.declare("DataTypes/Note", ["Synesthesia"], function () {
 
     return Note;
   })();
+
+  return Note;
 
 });

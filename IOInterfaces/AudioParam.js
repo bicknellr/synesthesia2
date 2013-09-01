@@ -7,11 +7,13 @@ module.declare("IOInterfaces/AudioParam", [
   var Graph = module.require("Graph");
   var Synesthesia = module.require("Synesthesia");
 
-  Synesthesia.IOInterfaces["AudioParam"] = (function () {
+  var Audio = module.require("IOInterfaces/Audio");
+
+  var AudioParam = (function () {
     function AudioParam (params) {
       params = (typeof params == "undefined" ? {} : params);
 
-      Synesthesia.IOInterfaces.Audio.apply(this, [params]);
+      Audio.apply(this, [params]);
 
       this.script_node = this.context.createScriptProcessor(2048);
       this.script_node.onaudioprocess = this.onAudioProcess.bind(this);
@@ -24,7 +26,7 @@ module.declare("IOInterfaces/AudioParam", [
       this.automation = null;
     }
 
-    AudioParam.prototype = Object.create(Synesthesia.IOInterfaces.Audio.prototype);
+    AudioParam.prototype = Object.create(Audio.prototype);
 
     AudioParam.prototype.getTime = function () {
       return this.time;
@@ -75,5 +77,7 @@ module.declare("IOInterfaces/AudioParam", [
 
     return AudioParam;
   })();
+
+  return AudioParam;
 
 });

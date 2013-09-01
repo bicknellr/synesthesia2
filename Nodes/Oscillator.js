@@ -8,7 +8,10 @@ module.declare("Nodes/Oscillator", [
   var Graph = module.require("Graph");
   var Synesthesia = module.require("Synesthesia");
 
-  Synesthesia.NodeLibrary["Oscillator"] = (function () {
+  var Audio = module.require("IOInterfaces/Audio");
+  var AudioParam = module.require("IOInterfaces/AudioParam");
+
+  var Oscillator = (function () {
     function Oscillator (params) {
       Graph.Node.apply(this);
 
@@ -17,18 +20,18 @@ module.declare("Nodes/Oscillator", [
       this.api_node = this.context.createOscillator();
 
       this.inputs = {
-        "frequency": new Synesthesia.IOInterfaces.AudioParam({
+        "frequency": new AudioParam({
           apiNode: this.api_node.frequency,
           context: this.context
         }),
-        "detune": new Synesthesia.IOInterfaces.AudioParam({
+        "detune": new AudioParam({
           apiNode: this.api_node.detune,
           context: this.context
         })
       };
 
       this.outputs = {
-        "audio": new Synesthesia.IOInterfaces.Audio({
+        "audio": new Audio({
           apiNode: this.api_node,
           context: this.context
         })
@@ -39,5 +42,7 @@ module.declare("Nodes/Oscillator", [
 
     return Oscillator;
   })();
+
+  return Oscillator;
 
 });

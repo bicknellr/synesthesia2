@@ -6,7 +6,7 @@ module.declare("IOInterfaces/Notes", [
   var Graph = module.require("Graph");
   var Synesthesia = module.require("Synesthesia");
 
-  Synesthesia.IOInterfaces["Notes"] = (function () {
+  var Notes = (function () {
     function Notes (params) {
       params = (typeof params == "undefined" ? {} : params);
 
@@ -32,5 +32,7 @@ module.declare("IOInterfaces/Notes", [
 
     return Notes;
   })();
+
+  return Notes;
 
 });

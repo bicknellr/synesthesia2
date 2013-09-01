@@ -1,8 +1,10 @@
-module.declare("DataTypes/Automation", ["Synesthesia"], function () {
+module.declare("DataTypes/Automation", [
+  "Synesthesia"
+], function () {
 
   var Synesthesia = module.require("Synesthesia");
 
-  Synesthesia.DataTypes["Automation"] = (function () {
+  var Automation = (function () {
     function Automation (params) {
       params = (typeof params == "undefined" ? {} : params);
 
@@ -95,5 +97,7 @@ module.declare("DataTypes/Automation", ["Synesthesia"], function () {
 
     return Automation;
   })();
+
+  return Automation;
 
 });

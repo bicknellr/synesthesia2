@@ -21,20 +21,14 @@ module.declare("Synesthesia", [
       }
     }
 
-    Synesthesia.NodeLibrary = {};
-
-    Synesthesia.prototype.produceNode = function (node_name, node_params) {
+    Synesthesia.prototype.produceNode = function (node_constructor, node_params) {
       node_params = node_params || {};
       node_params.audioContext = this.audio_context;
-      return new Synesthesia.NodeLibrary[node_name](node_params);
+      return new node_constructor(node_params);
     };
 
     return Synesthesia;
   })();
-
-  Synesthesia.IOInterfaces = {};
-
-  Synesthesia.DataTypes = {};
 
   return Synesthesia;
 
