@@ -1,6 +1,7 @@
 module.declare("Nodes/MIDISource", [
   "Graph",
   "Synesthesia",
+  "DataTypes/MIDIMessage",
   "IOInterfaces/IONumber",
   "IOInterfaces/MIDI",
   "Nodes/MIDISource:canaryPolyfillMIDIAccess"
@@ -8,6 +9,8 @@ module.declare("Nodes/MIDISource", [
 
   var Graph = module.require("Graph");
   var Synesthesia = module.require("Synesthesia");
+
+  var MIDIMessage = module.require("DataTypes/MIDIMessage");
 
   var IONumber = module.require("IOInterfaces/IONumber");
   var MIDI = module.require("IOInterfaces/MIDI");
@@ -72,8 +75,11 @@ module.declare("Nodes/MIDISource", [
       selected_input.onmidimessage = this.onmidimessage.bind(this);
     };
 
-    MIDISource.prototype.onmidimessage = function () {
-      console.log(arguments);
+    MIDISource.prototype.onmidimessage = function (message_event) {
+      var msg = new MIDIMessage({
+        data: Array.prototype.slice.apply(message_event.data)
+      });
+      console.log(msg);
     };
 
     return MIDISource;
