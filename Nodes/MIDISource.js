@@ -97,7 +97,7 @@ module.declare("Nodes/MIDISource:canaryPolyfillMIDIAccess", [], function () {
       function MIDIPortPolyfill (input_or_output) {
         Object.defineProperties(this, {
           "_input_or_output": {
-            enumerable: true,
+            enumerable: false,
             writable: false,
             value: input_or_output,
           },
