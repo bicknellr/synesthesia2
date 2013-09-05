@@ -33,10 +33,14 @@ module.declare("Nodes/MIDISource", [
 
       this.access = undefined;
 
-      navigator.requestMIDIAccess().then(
-        this.requestMIDIAccess_success.bind(this),
-        this.requestMIDIAccess_failure.bind(this)
-      );
+      if (!navigator.requestMIDIAccess) {
+        console.error("MIDISource: Unable to request MIDIAccess object!");
+      } else {
+        navigator.requestMIDIAccess().then(
+          this.requestMIDIAccess_success.bind(this),
+          this.requestMIDIAccess_failure.bind(this)
+        );
+      }
     };
 
     MIDISource.prototype = Object.create(Graph.Node.prototype);
