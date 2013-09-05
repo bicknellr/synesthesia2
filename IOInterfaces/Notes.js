@@ -1,10 +1,8 @@
 module.declare("IOInterfaces/Notes", [
-  "Graph",
-  "Synesthesia"
+  "Graph"
 ], function () {
 
   var Graph = module.require("Graph");
-  var Synesthesia = module.require("Synesthesia");
 
   var Notes = (function () {
     function Notes (params) {

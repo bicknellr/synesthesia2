@@ -1,6 +1,5 @@
 module.declare("Nodes/MIDISource", [
   "Graph",
-  "Synesthesia",
   "DataTypes/MIDIMessage",
   "IOInterfaces/IONumber",
   "IOInterfaces/MIDI",
@@ -8,7 +7,6 @@ module.declare("Nodes/MIDISource", [
 ], function () {
 
   var Graph = module.require("Graph");
-  var Synesthesia = module.require("Synesthesia");
 
   var MIDIMessage = module.require("DataTypes/MIDIMessage");
 

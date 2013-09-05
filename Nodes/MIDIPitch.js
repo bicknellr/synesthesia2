@@ -1,11 +1,9 @@
 module.declare("Nodes/MIDIPitch", [
   "Graph",
-  "Synesthesia",
   "IOInterfaces/MIDI"
 ], function () {
 
   var Graph = module.require("Graph");
-  var Synesthesia = module.require("Synesthesia");
 
   var MIDI = module.require("IOInterfaces/MIDI");
 

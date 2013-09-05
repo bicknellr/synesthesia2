@@ -1,12 +1,10 @@
 module.declare("Nodes/BitCrusher", [
   "Graph",
-  "Synesthesia",
   "IOInterfaces/Audio",
   "IOInterfaces/CustomAudioParam"
 ], function () {
 
   var Graph = module.require("Graph");
-  var Synesthesia = module.require("Synesthesia");
 
   var Audio = module.require("IOInterfaces/Audio");
   var CustomAudioParam = module.require("IOInterfaces/CustomAudioParam");

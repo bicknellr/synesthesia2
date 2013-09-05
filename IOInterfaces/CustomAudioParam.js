@@ -1,11 +1,9 @@
 module.declare("IOInterfaces/CustomAudioParam", [
   "Graph",
-  "Synesthesia",
   "IOInterfaces/AudioParam"
 ], function () {
 
   var Graph = module.require("Graph");
-  var Synesthesia = module.require("Synesthesia");
 
   var AudioParam = module.require("IOInterfaces/AudioParam");
 

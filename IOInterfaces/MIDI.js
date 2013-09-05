@@ -1,10 +1,8 @@
 module.declare("IOInterfaces/MIDI", [
-  "Graph",
-  "Synesthesia"
+  "Graph"
 ], function () {
 
   var Graph = module.require("Graph");
-  var Synesthesia = module.require("Synesthesia");
 
   var MIDI = (function () {
     function MIDI (params) {

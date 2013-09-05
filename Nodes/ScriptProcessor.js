@@ -1,11 +1,9 @@
 module.declare("Nodes/ScriptProcessor", [
   "Graph",
-  "Synesthesia",
   "IOInterfaces/Audio"
 ], function () {
 
   var Graph = module.require("Graph");
-  var Synesthesia = module.require("Synesthesia");
 
   var Audio = module.require("IOInterfaces/Audio");
 

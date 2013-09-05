@@ -1,10 +1,8 @@
 module.declare("IOInterfaces/Audio", [
-  "Graph",
-  "Synesthesia"
+  "Graph"
 ], function () {
 
   var Graph = module.require("Graph");
-  var Synesthesia = module.require("Synesthesia");
 
   var Audio = (function () {
     function Audio (params) {

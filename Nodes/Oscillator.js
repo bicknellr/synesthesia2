@@ -1,12 +1,10 @@
 module.declare("Nodes/Oscillator", [
   "Graph",
-  "Synesthesia",
   "IOInterfaces/Audio",
   "IOInterfaces/AudioParam"
 ], function () {
 
   var Graph = module.require("Graph");
-  var Synesthesia = module.require("Synesthesia");
 
   var Audio = module.require("IOInterfaces/Audio");
   var AudioParam = module.require("IOInterfaces/AudioParam");
