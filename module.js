@@ -100,7 +100,7 @@ window.module = {
     // Mark requested module dependencies.
     var _unused_dependencies_stack = this._unused_dependencies_stack;
     var last_stack = _unused_dependencies_stack[_unused_dependencies_stack.length - 1];
-    if (last_stack.indexOf(name) != -1) {
+    if (last_stack && last_stack.indexOf(name) != -1) {
       last_stack.splice(last_stack.indexOf(name), 1);
     }
 
