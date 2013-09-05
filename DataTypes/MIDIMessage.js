@@ -174,6 +174,19 @@ module.declare("DataTypes/MIDIMessage", [], function () {
       NULL_FUNCTION: 0x7F7F
     };
 
+    MIDIMessage.getFrequencyForNoteNumber = function (note_number) {
+      // Note number 69 is A at 440Hz.
+      return 440 * Math.pow(2, (note_number - 69) / 12);
+    };
+
+    MIDIMessage.prototype.getFrequency = function () {
+      if (!this.note_number) {
+        return 0;
+      }
+
+      return MIDIMessage.getFrequencyForNoteNumber(this.note_number);
+    };
+
     return MIDIMessage;
   })();
 

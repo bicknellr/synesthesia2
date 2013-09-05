@@ -23,11 +23,6 @@ module.declare("IOInterfaces/MIDI", [
 
     MIDI.prototype = Object.create(Graph.IOInterface.prototype);
 
-    MIDI.getFrequencyForNoteNumber = function (note_number) {
-      // Note number 69 is A at 440Hz.
-      return 440 * Math.pow(2, (note_number - 69) / 12);
-    };
-
     MIDI.prototype.send = function (data, timestamp) {
       var connections = this.getConnections();
       for (var conn_ix = 0; conn_ix < connections.length; conn_ix++) {
