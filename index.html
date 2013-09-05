@@ -29,6 +29,8 @@ module.declare("MAIN", [
   "Synesthesia",
   "DataTypes/Automation",
   "Nodes/BitCrusher",
+  "Nodes/MIDILogger",
+  "Nodes/MIDIPitch",
   "Nodes/MIDISource",
   "Nodes/MainOutput",
   "Nodes/Oscillator",
@@ -41,6 +43,8 @@ module.declare("MAIN", [
   var Automation = module.require("DataTypes/Automation");
 
   var BitCrusher = module.require("Nodes/BitCrusher");
+  var MIDILogger = module.require("Nodes/MIDILogger");
+  var MIDIPitch = module.require("Nodes/MIDIPitch");
   var MIDISource = module.require("Nodes/MIDISource");
   var MainOutput = module.require("Nodes/MainOutput");
   var Oscillator = module.require("Nodes/Oscillator");
@@ -114,7 +118,18 @@ module.declare("MAIN", [
     );
     bitcrusher1.getInput("width").setAutomation(bit_auto);
 
-    midi0 = MainSynesthesia.produceNode(MIDISource);
+
+    midi_source0 = MainSynesthesia.produceNode(MIDISource);
+
+      midi_logger0 = MainSynesthesia.produceNode(MIDILogger);
+        midi_source0.getOutput("midi").connectTo(midi_logger0.getInput("midi"));
+
+      midi_pitch0 = MainSynesthesia.produceNode(MIDIPitch);
+        midi_pitch0.getInput("semitones").set(1);
+        midi_source0.getOutput("midi").connectTo(midi_pitch0.getInput("midi"));
+
+          midi_logger1 = MainSynesthesia.produceNode(MIDILogger);
+            midi_pitch0.getOutput("midi").connectTo(midi_logger1.getInput("midi"));
 
     // Test functions.
 
@@ -141,7 +156,7 @@ STOP = function () {};
 <button onclick="STOP()">STOP</button>
 <br />
 <button onclick="eval(this.innerHTML);">
-  midi0.getInput("device_index").set(0);
+  midi_source0.getInput("device_index").set(0);
 </button>
 <br />
 <canvas id="wave_canvas" style="background-color:black;" width="640" height="240"></canvas>

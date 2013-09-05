@@ -10,6 +10,8 @@ module.declare("IOInterfaces/IONumber", [
 
       Graph.IOInterface.apply(this);
 
+      this.value = params.defaultValue;
+
       this.on_set = params.onSet || function () {};
     }
 

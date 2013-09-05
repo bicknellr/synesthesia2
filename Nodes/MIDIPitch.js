@@ -1,10 +1,14 @@
 module.declare("Nodes/MIDIPitch", [
   "Graph",
+  "DataTypes/MIDIMessage",
   "IOInterfaces/MIDI"
 ], function () {
 
   var Graph = module.require("Graph");
 
+  var MIDIMessage = module.require("DataTypes/MIDIMessage");
+
+  var IONumber = module.require("IOInterfaces/IONumber");
   var MIDI = module.require("IOInterfaces/MIDI");
 
   var MIDIPitch = (function () {
@@ -14,6 +18,10 @@ module.declare("Nodes/MIDIPitch", [
       this.inputs = {
         "midi": new MIDI({
           onMessage: this.onMessage.bind(this)
+        }),
+
+        "semitones": new IONumber({
+          defaultValue: 0
         })
       };
       
@@ -24,8 +32,16 @@ module.declare("Nodes/MIDIPitch", [
 
     MIDIPitch.prototype = Object.create(Graph.Node.prototype);
 
-    MIDIPitch.prototype.onMessage = function (data, timestamp) {
-      this.getOutput("midi").send([data[0], data[1] + 1, data[2]], timestamp);
+    MIDIPitch.prototype.onMessage = function (message) {
+      if (!message.note_number) {
+        return;
+      }
+
+      var new_data = [].concat(message.data);
+      new_data[1] += this.getInput("semitones").get();
+      this.getOutput("midi").send(new MIDIMessage({
+        data: new_data
+      }));
     };
 
     return MIDIPitch;
