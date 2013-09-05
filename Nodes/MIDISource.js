@@ -76,10 +76,9 @@ module.declare("Nodes/MIDISource", [
     };
 
     MIDISource.prototype.onmidimessage = function (message_event) {
-      var msg = new MIDIMessage({
+      this.getOutput("midi").send(new MIDIMessage({
         data: Array.prototype.slice.apply(message_event.data)
-      });
-      console.log(msg);
+      }));
     };
 
     return MIDISource;
