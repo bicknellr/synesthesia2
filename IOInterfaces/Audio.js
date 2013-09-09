@@ -14,18 +14,18 @@ module.declare("IOInterfaces/Audio", [
 
       this.context = params.context;
 
-      this.on_connect = (function (other_iointerface) {
+      this.addEventListener("connect", function (other_iointerface) {
         this.api_node.connect(other_iointerface.getAPINode());
-      }).bind(this);
+      }.bind(this));
 
-      this.on_disconnect = (function (other_iointerface) {
+      this.addEventListener("disconnect", function (other_iointerface) {
         this.api_node.disconnect();
 
         var connections = this.getConnections();
         for (var conn_ix = 0; conn_ix < connections.length; conn_ix++) {
           this.api_node.connect(connections[conn_ix].getAPINode());
         }
-      }).bind(this);
+      }.bind(this));
     }
 
     Audio.prototype = Object.create(Graph.IOInterface.prototype);

@@ -1,4 +1,8 @@
-module.declare("Graph", [], function () {
+module.declare("Graph", [
+  "Utilities/Eventable"
+], function () {
+
+  var Eventable = module.require("Utilities/Eventable");
 
   var Graph = {};
 
@@ -30,11 +34,9 @@ module.declare("Graph", [], function () {
 
   Graph.IOInterface = (function () {
     function IOInterface () {
-      this.connections = [];
+      Eventable(this);
 
-      // override
-      this.on_connect = function () {};
-      this.on_disconnect = function () {};
+      this.connections = [];
     }
 
     IOInterface.prototype.getConnections = function () {
@@ -49,7 +51,7 @@ module.declare("Graph", [], function () {
 
       this.connections.push(other_iointerface);
 
-      this.on_connect(other_iointerface);
+      this.launchEvent("connect", other_iointerface);
     };
 
     IOInterface.prototype.disconnectTo = function (other_iointerface) {
@@ -59,7 +61,7 @@ module.declare("Graph", [], function () {
 
       this.connections.splice(this.connections.indexOf(other_iointerface), 1);
 
-      this.on_disconnect(other_iointerface);
+      this.launchEvent("disconnect", other_iointerface);
     };
 
     return IOInterface;

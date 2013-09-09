@@ -9,22 +9,16 @@ module.declare("IOInterfaces/MIDI", [
       params = (typeof params == "undefined" ? {} : params);
 
       Graph.IOInterface.apply(this);
-
-      this.on_connect = (function (other_iointerface) {
-      }).bind(this);
-
-      this.on_disconnect = (function (other_iointerface) {
-      }).bind(this);
-
-      this.on_message = params.onMessage || function () {};
     }
 
     MIDI.prototype = Object.create(Graph.IOInterface.prototype);
 
     MIDI.prototype.send = function (data, timestamp) {
+      this.launchEvent("message", data, timestamp);
+
       var connections = this.getConnections();
       for (var conn_ix = 0; conn_ix < connections.length; conn_ix++) {
-        connections[conn_ix].on_message(data, timestamp);
+        connections[conn_ix].send(data, timestamp);
       }
     };
 

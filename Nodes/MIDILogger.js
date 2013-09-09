@@ -12,10 +12,10 @@ module.declare("Nodes/MIDILogger", [
       Graph.Node.apply(this);
 
       this.inputs = {
-        "midi": new MIDI({
-          onMessage: this.onMessage.bind(this)
-        })
+        "midi": new MIDI()
       };
+
+      this.getInput("midi").addEventListener("message", this.onMessage.bind(this));
 
       this.outputs = {};
     }

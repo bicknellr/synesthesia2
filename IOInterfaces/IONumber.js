@@ -11,8 +11,6 @@ module.declare("IOInterfaces/IONumber", [
       Graph.IOInterface.apply(this);
 
       this.value = params.defaultValue;
-
-      this.on_set = params.onSet || function () {};
     }
 
     IONumber.prototype = Object.create(Graph.IOInterface.prototype);
@@ -25,7 +23,7 @@ module.declare("IOInterfaces/IONumber", [
 
       this.value = new_value;
 
-      this.on_set(this.value);
+      this.launchEvent("set", this.value);
 
       var connections = this.getConnections();
       for (var i = 0; i < connections.length; i++) {

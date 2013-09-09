@@ -22,10 +22,10 @@ module.declare("Nodes/MIDISource", [
       this.context = params.audioContext;
 
       this.inputs = {
-        "device_index": new IONumber({
-          onSet: this.selectDeviceByIndex.bind(this)
-        })
+        "device_index": new IONumber()
       };
+
+      this.getInput("device_index").addEventListener("set", this.selectDeviceByIndex.bind(this));
 
       this.outputs = {
         "midi": new MIDI()
